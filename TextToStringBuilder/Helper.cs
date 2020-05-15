@@ -12,8 +12,8 @@
             var sb = new StringBuilder();
             var delayedEmptyLines = new StringBuilder();
 
-            prefix = prefix == null ? "" : prefix;
-            suffix = suffix == null ? "" : suffix;
+            prefix ??= "";
+            suffix ??= "";
 
             foreach (string line in data.Split('\n'))
             {

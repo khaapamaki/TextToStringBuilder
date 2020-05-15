@@ -3,6 +3,8 @@ namespace UnitTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TextToStringBuilder;
 
+    // todo verbatim mode tests
+
     [TestClass]
     public class HelperUnitTest
     {
@@ -31,12 +33,16 @@ namespace UnitTests
         [DataRow("  .Append(\"text\").Append(\"TEXT\")  ", "textTEXT")]
         [DataRow("  .Append(\"text\")\n  .Append(\"TEXT\")  ", "textTEXT")]
         [DataRow("  .AppendLine(\"text\").Append(\"TEXT\")", "text\r\nTEXT")]
+        [DataRow("  .AppendLine(\"text\").AppendLine(\"TEXT\")", "text\r\nTEXT\r\n")]
         [DataRow("  .AppendLine(\"text\\\").Append(\"TEXT\")", "text\").Append(\r\n")]
         [DataRow("  .AppendLine(\"text\\\") \n\n .Append(\"TEXT\")", "text\") \n\n .Append(\r\n")]
         [DataRow("  .Append()", "")]
         [DataRow("  .Append(\"\")", "")]
         [DataRow("  .AppendLine()", "\r\n")]
         [DataRow("  .AppendLine(\"\")", "\r\n")]
+        [DataRow(".AppendLine(\"a\")", "a\r\n")]
+        [DataRow(".AppendLine(\"a\")  ", "a\r\n")]
+        [DataRow(".AppendLine(\" 'Ö'\\\" \")  ", " 'Ö'\" \r\n")]
         public void UnwrapAppends_Cases_ReturnCorrectValues(string testString, string expected)
         {
             string result = Helper.UnwrapAppends(testString);
