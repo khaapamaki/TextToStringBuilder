@@ -26,14 +26,14 @@
         {
             InitializeComponent();
 
-            CbOutputMode.Items.Add(_outputModeFluentExecuteSql);
             CbOutputMode.Items.Add(_outputModeExecuteSql);
-            CbOutputMode.Items.Add(_outputModeFluentVariable);
+            CbOutputMode.Items.Add(_outputModeFluentExecuteSql);
             CbOutputMode.Items.Add(_outputModeVariable);
+            CbOutputMode.Items.Add(_outputModeFluentVariable);
 
             CbOutputMode.SelectionChanged += ComboBoxSelectionChanged;
 
-            CbOutputMode.SelectedItem = _outputModeFluentExecuteSql;
+            CbOutputMode.SelectedItem = _outputModeExecuteSql;
         }
 
         private void ComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -129,10 +129,10 @@
 
         private string CreateStringBuilderVariable(string data, string stringBuilderName)
         {
-            string lines = Helper.CreateStringBuilderAppendLines(data, "    " + stringBuilderName, ";");
+            string lines = Helper.CreateStringBuilderAppendLines(data, stringBuilderName, ";");
 
             var sb = new StringBuilder()
-                .Append($"var {stringBuilderName} = new StringBuilder()")
+                .Append($"var {stringBuilderName} = new StringBuilder();")
                 .Append(lines?.Length > 0 ? Environment.NewLine : string.Empty)
                 .Append(lines ?? string.Empty)
                 .AppendLine(lines?.Length > 0 ? string.Empty : ";");
@@ -141,10 +141,10 @@
 
         private string CreateExecuteSqlCommand(string data, string stringBuilderName)
         {
-            string lines = Helper.CreateStringBuilderAppendLines(data, "    " + stringBuilderName, ";");
+            string lines = Helper.CreateStringBuilderAppendLines(data, stringBuilderName, ";");
 
             var sb = new StringBuilder()
-                .Append($"var {stringBuilderName} = new StringBuilder()")
+                .Append($"var {stringBuilderName} = new StringBuilder();")
                 .Append(lines?.Length > 0 ? Environment.NewLine : string.Empty)
                 .Append(lines ?? string.Empty)
                 .AppendLine(lines?.Length > 0 ? string.Empty : ";")
