@@ -56,6 +56,51 @@
             return sb.ToString();
         }
 
+        public static string CreateVerbatimStringData(string data, string prefix = null, string suffix = null)
+        {
+            var sb = new StringBuilder();
+            var delayedEmptyLines = new StringBuilder();
+
+            prefix ??= "";
+            suffix ??= "";
+
+            foreach (string line in data.Split('\n'))
+            {
+                var newLine = Helper.ExpandTabs(line.TrimEnd().TrimEnd('\t'), 4);
+
+                newLine = newLine.Replace("\"", "\"\"");
+
+                if (string.IsNullOrEmpty(newLine))
+                {
+                    if (sb.Length > 0)
+                    {
+                        delayedEmptyLines
+                            .Append(prefix)
+                            .AppendLine(suffix);
+                    }
+                }
+                else
+                {
+                    if (sb.Length > 0)
+                    {
+                        sb.AppendLine();
+                    }
+
+                    if (delayedEmptyLines.Length > 0)
+                    {
+                        sb.Append(delayedEmptyLines);
+                        delayedEmptyLines = new StringBuilder();
+                    }
+
+                    sb.Append(prefix)
+                        .Append(newLine)
+                        .Append(suffix);
+                }
+            }
+
+            return sb.ToString();
+        }
+
         public static string UnwrapAppends(string data)
         {
             const string startTag = ".Append(";

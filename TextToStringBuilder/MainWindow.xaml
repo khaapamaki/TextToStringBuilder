@@ -68,7 +68,7 @@
       <TextBox x:Name="TbStringBuilder"
                Height="23"
                TextWrapping="Wrap"
-               Text="sb"
+               Text="sql"
                VerticalAlignment="Top"
                Width="120"
                Margin="5,5,5,5" />

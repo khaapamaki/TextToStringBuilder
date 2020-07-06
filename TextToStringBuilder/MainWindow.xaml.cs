@@ -21,6 +21,7 @@
         readonly ComboBoxItem _outputModeExecuteSql = new ComboBoxItem("Execute SQL Command");
         readonly ComboBoxItem _outputModeFluentVariable = new ComboBoxItem("Fluent SB Variable");
         readonly ComboBoxItem _outputModeVariable = new ComboBoxItem("SB Variable");
+        readonly ComboBoxItem _outputModeVerbatimExecuteSql = new ComboBoxItem("Verbatim Execute String");
 
         public MainWindow()
         {
@@ -30,6 +31,7 @@
             CbOutputMode.Items.Add(_outputModeFluentExecuteSql);
             CbOutputMode.Items.Add(_outputModeVariable);
             CbOutputMode.Items.Add(_outputModeFluentVariable);
+            CbOutputMode.Items.Add(_outputModeVerbatimExecuteSql);
 
             CbOutputMode.SelectionChanged += ComboBoxSelectionChanged;
 
@@ -47,7 +49,7 @@
 
             if (string.IsNullOrEmpty(sbName))
             {
-                sbName = "sb";
+                sbName = "sql";
             }
 
             string data = TextBox.Text;
@@ -78,6 +80,13 @@
             {
                 _undoStack.Push(data);
                 data = CreateStringBuilderVariable(data, sbName);
+                TextBox.Text = data;
+            }
+
+            if (CbOutputMode.SelectedItem == _outputModeVerbatimExecuteSql)
+            {
+                _undoStack.Push(data);
+                data = CreateVerbatimStringExecuteSQLVariable(data, sbName);
                 TextBox.Text = data;
             }
         }
@@ -152,6 +161,21 @@
             return sb.ToString();
         }
 
+        private string CreateVerbatimStringExecuteSQLVariable(string data, string stringBuilderName)
+        {
+            string lines = Helper.CreateVerbatimStringData(data);
+
+            var sb = new StringBuilder()
+                .Append($"const string {stringBuilderName} = @\"")
+                .Append(lines?.Length > 0 ? Environment.NewLine : string.Empty)
+                .Append(lines ?? string.Empty)
+                //.Append(lines?.Length > 0 ? Environment.NewLine : string.Empty)
+                .AppendLine("\";")
+                .AppendLine()
+                .AppendLine($"Execute.Sql({stringBuilderName});");
+
+            return sb.ToString();
+        }
 
         private class ComboBoxItem
         {
