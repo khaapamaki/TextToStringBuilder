@@ -17,7 +17,7 @@
 
             foreach (string line in data.Split('\n'))
             {
-                var newLine = Helper.ExpandTabs(line.TrimEnd().TrimEnd('\t'), 4);
+                var newLine = ExpandTabs(line.TrimEnd().TrimEnd('\t'), 4);
 
                 newLine = newLine.Replace("\\", "\\\\");
                 newLine = newLine.Replace("\"", "\\\"");
@@ -66,7 +66,7 @@
 
             foreach (string line in data.Split('\n'))
             {
-                var newLine = Helper.ExpandTabs(line.TrimEnd().TrimEnd('\t'), 4);
+                var newLine = ExpandTabs(line.TrimEnd().TrimEnd('\t'), 4);
 
                 newLine = newLine.Replace("\"", "\"\"");
 

@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
+    using static Helper;
 
     // todo optionally split long lines
 
@@ -96,7 +97,7 @@
             string data = TextBox.Text;
 
             _undoStack.Push(data);
-            data = Helper.UnwrapAppends(data);
+            data = UnwrapAppends(data);
             TextBox.Text = data;
         }
 
@@ -110,7 +111,7 @@
 
         private string CreateFluentStringBuilderVariable(string data, string stringBuilderName)
         {
-            string lines = Helper.CreateStringBuilderAppendLines(data, "    ");
+            string lines = CreateStringBuilderAppendLines(data, "    ");
 
             var sb = new StringBuilder()
                 .Append($"var {stringBuilderName} = new StringBuilder()")
@@ -123,7 +124,7 @@
 
         private string CreateFluentExecuteSqlCommand(string data)
         {
-            string lines = Helper.CreateStringBuilderAppendLines(data, "    ");
+            string lines = CreateStringBuilderAppendLines(data, "    ");
 
             var sb = new StringBuilder()
                 .Append("Execute.Sql(new StringBuilder()")
@@ -138,7 +139,7 @@
 
         private string CreateStringBuilderVariable(string data, string stringBuilderName)
         {
-            string lines = Helper.CreateStringBuilderAppendLines(data, stringBuilderName, ";");
+            string lines = CreateStringBuilderAppendLines(data, stringBuilderName, ";");
 
             var sb = new StringBuilder()
                 .Append($"var {stringBuilderName} = new StringBuilder();")
@@ -150,7 +151,7 @@
 
         private string CreateExecuteSqlCommand(string data, string stringBuilderName)
         {
-            string lines = Helper.CreateStringBuilderAppendLines(data, stringBuilderName, ";");
+            string lines = CreateStringBuilderAppendLines(data, stringBuilderName, ";");
 
             var sb = new StringBuilder()
                 .Append($"var {stringBuilderName} = new StringBuilder();")
@@ -163,7 +164,7 @@
 
         private string CreateVerbatimStringExecuteSQLVariable(string data, string stringBuilderName)
         {
-            string lines = Helper.CreateVerbatimStringData(data);
+            string lines = CreateVerbatimStringData(data);
 
             var sb = new StringBuilder()
                 .Append($"const string {stringBuilderName} = @\"")
